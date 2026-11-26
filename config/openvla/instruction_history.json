@@ -1,0 +1,25 @@
+{
+  "last_instruction": "Pick an empty box, place it on the front table, pack parcels into the box, and move the box to the left conveyor.",
+  "entries": [
+    {
+      "id": "ba82b7a21e8f",
+      "text": "Pick an empty box, place it on the front table, pack parcels into the box, and move the box to the left conveyor.",
+      "last_used_at": 1795514754.664559
+    },
+    {
+      "id": "a6fedd73aefa",
+      "text": "Pick and Place Empty Box",
+      "last_used_at": 1795352039.544192
+    },
+    {
+      "id": "557478136a62",
+      "text": "Pick and Place Empty",
+      "last_used_at": 1794714107.5401049
+    },
+    {
+      "id": "89370c8bd467",
+      "text": "pick up the box",
+      "last_used_at": 1794299146.1567104
+    }
+  ]
+}

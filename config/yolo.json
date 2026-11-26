@@ -1,0 +1,186 @@
+{
+  "model_path": "/data/ota_work/opensource-ai-platform/models/YOLO11/best.pt",
+  "default_confidence": 0.7,
+  "targets": [
+    {
+      "class_id": 0,
+      "name": "box",
+      "enabled": false,
+      "threshold": 0.7
+    },
+    {
+      "class_id": 1,
+      "name": "green-box",
+      "enabled": true,
+      "threshold": 0.7
+    },
+    {
+      "class_id": 2,
+      "name": "grey-parcel",
+      "enabled": true,
+      "threshold": 0.65
+    },
+    {
+      "class_id": 3,
+      "name": "navy-box",
+      "enabled": true,
+      "threshold": 0.7
+    },
+    {
+      "class_id": 4,
+      "name": "purple-parcel",
+      "enabled": true,
+      "threshold": 0.65
+    },
+    {
+      "class_id": 5,
+      "name": "white-box",
+      "enabled": true,
+      "threshold": 0.7
+    },
+    {
+      "class_id": 6,
+      "name": "yellow-box",
+      "enabled": true,
+      "threshold": 0.7
+    }
+  ],
+  "tag_conditions": [
+    {
+      "id": "ytag-mwuhzh8l-j6dcs",
+      "enabled": true,
+      "tag_name": "big",
+      "rule_items": [
+        {
+          "id": "rule-mwuhzj9x-99yct",
+          "kind": "target",
+          "labels": [
+            "yellow-box"
+          ]
+        }
+      ],
+      "class_contains": [],
+      "target_labels": [
+        "yellow-box"
+      ],
+      "regions": [],
+      "size_rules": []
+    },
+    {
+      "id": "ytag-mwuicwnu-wxz1k",
+      "enabled": true,
+      "tag_name": "small",
+      "rule_items": [
+        {
+          "id": "rule-mwuidcrm-kir5l",
+          "kind": "target",
+          "labels": [
+            "green-box",
+            "navy-box",
+            "white-box"
+          ]
+        }
+      ],
+      "class_contains": [],
+      "target_labels": [
+        "green-box",
+        "navy-box",
+        "white-box"
+      ],
+      "regions": [],
+      "size_rules": []
+    },
+    {
+      "id": "ytag-mwuidsts-oan6h",
+      "enabled": true,
+      "tag_name": "horizon",
+      "rule_items": [
+        {
+          "id": "rule-mwulz2yp-ravev",
+          "kind": "target",
+          "labels": [
+            "green-box",
+            "navy-box",
+            "white-box"
+          ]
+        },
+        {
+          "id": "rule-mwumfpsx-fugw7",
+          "kind": "orientation",
+          "orientation": "horizontal"
+        }
+      ],
+      "class_contains": [],
+      "target_labels": [
+        "green-box",
+        "navy-box",
+        "white-box"
+      ],
+      "regions": [],
+      "size_rules": [
+        {
+          "orientation": "horizontal"
+        }
+      ]
+    },
+    {
+      "id": "ytag-mwumfx60-l4s0k",
+      "enabled": true,
+      "tag_name": "vertial",
+      "rule_items": [
+        {
+          "id": "rule-mwumgh0o-jyprx",
+          "kind": "target",
+          "labels": [
+            "green-box",
+            "navy-box",
+            "white-box"
+          ]
+        },
+        {
+          "id": "rule-mwumgp2g-p47ie",
+          "kind": "orientation",
+          "orientation": "vertical"
+        }
+      ],
+      "class_contains": [],
+      "target_labels": [
+        "green-box",
+        "navy-box",
+        "white-box"
+      ],
+      "regions": [],
+      "size_rules": [
+        {
+          "orientation": "vertical"
+        }
+      ]
+    },
+    {
+      "id": "ytag-mwumii3b-pqngg",
+      "enabled": true,
+      "tag_name": "on-going",
+      "rule_items": [
+        {
+          "id": "rule-mwumkvdq-sgyv0",
+          "kind": "target",
+          "labels": [
+            "green-box",
+            "navy-box",
+            "white-box",
+            "yellow-box"
+          ]
+        }
+      ],
+      "class_contains": [],
+      "target_labels": [
+        "green-box",
+        "navy-box",
+        "white-box",
+        "yellow-box"
+      ],
+      "regions": [],
+      "size_rules": []
+    }
+  ]
+}

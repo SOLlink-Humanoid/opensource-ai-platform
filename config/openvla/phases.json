@@ -1,0 +1,267 @@
+{
+  "active_profile": "big-box",
+  "big-box": {
+    "phases": [
+      {
+        "id": "6a986a674841",
+        "number": 1.0,
+        "description": "start",
+        "pose_name": "start",
+        "pose_file": "big-box-full-poese.json"
+      },
+      {
+        "id": "58ed5a54a233",
+        "number": 2.0,
+        "description": "pick_empty_box",
+        "pose_name": "pick-big-empty-box",
+        "pose_file": "big-box-full-poese.json"
+      },
+      {
+        "id": "da83933dbd6d",
+        "number": 3.0,
+        "description": "lift_empty_box",
+        "pose_name": "lift-big-empty-box",
+        "pose_file": "big-box-full-poese.json"
+      },
+      {
+        "id": "1767b30c4b24",
+        "number": 4.0,
+        "description": "turn_to_bench",
+        "pose_name": "turn-to-bench-with-big-box",
+        "pose_file": "big-box-full-poese.json"
+      },
+      {
+        "id": "c6bd75843e74",
+        "number": 5.0,
+        "description": "place_empty_box",
+        "pose_name": "place-big-empty-box",
+        "pose_file": "big-box-full-poese.json"
+      },
+      {
+        "id": "13e5bf64cd85",
+        "number": 6.0,
+        "description": "free_empty_box",
+        "pose_name": "free-big-empty-box",
+        "pose_file": "big-box-full-poese.json"
+      }
+    ],
+    "tags": [
+      "big"
+    ],
+    "hand_pose_file": "big-box-hand-poses.json"
+  },
+  "small-box-horizon": {
+    "phases": [
+      {
+        "id": "phase-mwbywgic",
+        "number": 1.0,
+        "description": "start",
+        "pose_name": "start (small/1)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-mwbywhih",
+        "number": 1.5,
+        "description": "prepare-to-pick-empty-box",
+        "pose_name": "prepare-to-pick-empty-box (small/1.5)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-mwbywgnk",
+        "number": 2.0,
+        "description": "pick-empty-box",
+        "pose_name": "pick-empty-box (small/2)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-mwbywgt7",
+        "number": 3.0,
+        "description": "lift-empty-box",
+        "pose_name": "lift-empty-box (small/3)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-mwbywgyj",
+        "number": 4.0,
+        "description": "turn-to-bench",
+        "pose_name": "turn-to-bench (small/4)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-mwbywh3l",
+        "number": 5.0,
+        "description": "place-empty-box",
+        "pose_name": "place-empty-box (small/5)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-mwu8kteh",
+        "number": 5.5,
+        "description": "change-snap-to-ready-pick",
+        "pose_name": "change-snap-to-ready-pick (small/5.5)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-mwu8l8jd",
+        "number": 6.0,
+        "description": "ready-packing",
+        "pose_name": "ready-packing (small/6)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-mwu8m3jt",
+        "number": 7.0,
+        "description": "pack",
+        "pose_name": "pack-horizon (small/7)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-mwumzgoa",
+        "number": 8.0,
+        "description": "lift-full-box",
+        "pose_name": "lift-full-box (small/8)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-mwun1hno",
+        "number": 9.0,
+        "description": "turn-to-ship",
+        "pose_name": "turn-to-ship (small/9)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-mwun2b4l",
+        "number": 10.0,
+        "description": "place-to-ship",
+        "pose_name": "place-to-ship (small/10)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-mwun36jo",
+        "number": 10.5,
+        "description": "leave-from-box",
+        "pose_name": "leave-from-box (small/10.5)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-mwun3l0r",
+        "number": 11.0,
+        "description": "complete",
+        "pose_name": "complete (small/11)",
+        "pose_file": "small-box-full-poese.json"
+      }
+    ],
+    "tags": [
+      "small",
+      "horizon"
+    ],
+    "hand_pose_file": "small-box-hand-poses.json"
+  },
+  "small-box-vertical": {
+    "phases": [
+      {
+        "id": "phase-sbxv-a1wgic",
+        "number": 1.0,
+        "description": "start",
+        "pose_name": "start (small/1)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-sbxv-a1whih",
+        "number": 1.5,
+        "description": "prepare-to-pick-empty-box",
+        "pose_name": "prepare-to-pick-empty-box (small/1.5)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-sbxv-a1wgnk",
+        "number": 2.0,
+        "description": "pick-empty-box",
+        "pose_name": "pick-empty-box (small/2)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-sbxv-a1wgt7",
+        "number": 3.0,
+        "description": "lift-empty-box",
+        "pose_name": "lift-empty-box (small/3)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-sbxv-a1wgyj",
+        "number": 4.0,
+        "description": "turn-to-bench",
+        "pose_name": "turn-to-bench (small/4)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-sbxv-a1wh3l",
+        "number": 5.0,
+        "description": "place-empty-box",
+        "pose_name": "place-empty-box (small/5)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-sbxv-a2kteh",
+        "number": 5.5,
+        "description": "change-snap-to-ready-pick",
+        "pose_name": "change-snap-to-ready-pick (small/5.5)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-sbxv-a2l8jd",
+        "number": 6.0,
+        "description": "ready-packing",
+        "pose_name": "ready-packing (small/6)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-sbxv-a2m3jt",
+        "number": 7.0,
+        "description": "pack",
+        "pose_name": "pack-vertical (small/7)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-sbxv-a3zgoa",
+        "number": 8.0,
+        "description": "lift-full-box",
+        "pose_name": "lift-full-box (small/8)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-sbxv-a41hno",
+        "number": 9.0,
+        "description": "turn-to-ship",
+        "pose_name": "turn-to-ship (small/9)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-sbxv-a42b4l",
+        "number": 10.0,
+        "description": "place-to-ship",
+        "pose_name": "place-to-ship (small/10)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-sbxv-a436jo",
+        "number": 10.5,
+        "description": "leave-from-box",
+        "pose_name": "leave-from-box (small/10.5)",
+        "pose_file": "small-box-full-poese.json"
+      },
+      {
+        "id": "phase-sbxv-a43l0r",
+        "number": 11.0,
+        "description": "complete",
+        "pose_name": "complete (small/11)",
+        "pose_file": "small-box-full-poese.json"
+      }
+    ],
+    "tags": [
+      "small",
+      "vertical"
+    ],
+    "hand_pose_file": "small-box-hand-poses.json"
+  }
+}
