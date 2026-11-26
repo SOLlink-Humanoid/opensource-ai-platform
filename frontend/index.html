@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open Source AI Platform</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/assets/favicon-32.png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest" href="/assets/site.webmanifest" />
+    <meta name="theme-color" content="#171a22" />
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <div id="app" class="app-shell">
+      <header class="app-brand" aria-label="애플리케이션">
+        <div class="app-brand-inner">
+          <img
+            class="app-brand-icon"
+            src="/assets/favicon.svg"
+            width="36"
+            height="36"
+            alt=""
+          />
+          <p class="app-brand-title">opensource AI platform</p>
+        </div>
+      </header>
+      <div class="layout">
+      <aside id="sidebar" class="sidebar" aria-label="탭">
+        <button type="button" id="sidebar-toggle" class="sidebar-toggle" title="사이드바 접기">
+          «
+        </button>
+        <nav class="tab-list" aria-label="페이지">
+          <a href="/yolo" class="tab" data-tab="yolo">YOLO11</a>
+          <a href="/openvla" class="tab" data-tab="openvla">OpenVLA</a>
+          <a href="/lerobot" class="tab" data-tab="lerobot">LeRobot</a>
+          <a href="/planner" class="tab" data-tab="planner">Task Planner</a>
+          <a href="/dev" class="tab tab-dev" data-tab="dev">Configuration</a>
+        </nav>
+        <div class="sidebar-meta">
+          <div id="health-dot" class="health-dot" title="상태"></div>
+          <span id="health-text" class="health-text">—</span>
+        </div>
+      </aside>
+
+      <main class="main">
+        <section id="panel-yolo" class="panel panel-col-split active">
+          <div class="panel-col-split-pane-left">
+            <header class="main-header">
+              <h1 id="panel-title">YOLO11</h1>
+              <span id="frame-badge" class="frame-badge">frame —</span>
+            </header>
+            <div class="video-wrap">
+            <div class="video-stage" id="yolo-video-stage">
+              <span class="video-frame-corner video-frame-corner--tl" data-corner="tl"
+                >(0, 0)</span
+              >
+              <span class="video-frame-corner video-frame-corner--tr" data-corner="tr"
+                >(—, 0)</span
+              >
+              <span class="video-frame-corner video-frame-corner--bl" data-corner="bl"
+                >(0, —)</span
+              >
+              <span class="video-frame-corner video-frame-corner--br" data-corner="br"
+                >(—, —)</span
+              >
+              <img id="video-yolo" class="video" alt="YOLO stream" />
+            </div>
+            </div>
+          </div>
+          <div
+            class="panel-col-split-handle"
+            id="yolo-split-handle"
+            role="separator"
+            tabindex="0"
+            aria-orientation="vertical"
+            aria-label="YOLO11 영상과 설정 패널 너비 조절"
+          ></div>
+          <aside class="side-panel yolo-side panel-col-split-pane-right">
+            <div class="openvla-side-layout">
+              <nav
+                class="openvla-bookmarks"
+                id="yolo-bookmarks"
+                role="tablist"
+                aria-label="YOLO11 사이드 패널"
+              >
+                <button
+                  type="button"
+                  class="openvla-bookmark is-active"
+                  id="yolo-bookmark-detections"
+                  role="tab"
+                  data-yolo-pane="detections"
+                  aria-selected="true"
+                  aria-controls="yolo-pane-detections"
+                >
+                  탐지 목록
+                </button>
+                <button
+                  type="button"
+                  class="openvla-bookmark"
+                  id="yolo-bookmark-targets"
+                  role="tab"
+                  data-yolo-pane="targets"
+                  aria-selected="false"
+                  aria-controls="yolo-pane-targets"
+                >
+                  탐지 타겟 설정
+                </button>
+                <button
+                  type="button"
+                  class="openvla-bookmark"
+                  id="yolo-bookmark-tag-rules"
+                  role="tab"
+                  data-yolo-pane="tag-rules"
+                  aria-selected="false"
+                  aria-controls="yolo-pane-tag-rules"
+                >
+                  태그 조건
+                </button>
+              </nav>
+              <div class="openvla-side-panes">
+                <div
+                  class="openvla-side-pane yolo-detections-pane"
+                  id="yolo-pane-detections"
+                  role="tabpanel"
+                  aria-labelledby="yolo-bookmark-detections"
+                >
+                  <div class="yolo-detections-layout">
+                    <div id="yolo-list" class="yolo-det-groups" aria-live="polite"></div>
+                    <section class="yolo-det-group yolo-tag-active-group" aria-live="polite">
+                      <h3 class="yolo-det-group-title panel-group-title">활성 태그</h3>
+                      <div id="yolo-tag-active" class="yolo-tag-active"></div>
+                    </section>
+                  </div>
+                </div>
+                <div
+                  class="openvla-side-pane"
+                  id="yolo-pane-targets"
+                  role="tabpanel"
+                  aria-labelledby="yolo-bookmark-targets"
+                  hidden
+                >
+                  <div
+                    id="yolo-target-board"
+                    class="yolo-target-board"
+                    aria-live="polite"
+                  ></div>
+                </div>
+                <div
+                  class="openvla-side-pane yolo-tag-pane"
+                  id="yolo-pane-tag-rules"
+                  role="tabpanel"
+                  aria-labelledby="yolo-bookmark-tag-rules"
+                  hidden
+                >
+                  <h3 class="yolo-tag-condition-board-title">태그 조건 카드</h3>
+                  <div
+                    id="yolo-tag-condition-board"
+                    class="yolo-tag-condition-board"
+                    aria-live="polite"
+                  ></div>
+                  <button type="button" id="yolo-tag-condition-add" class="yolo-tag-condition-add">
+                    + 조건 카드 추가
+                  </button>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section id="panel-openvla" class="panel panel-col-split">
+          <div class="panel-col-split-pane-left openvla-split-pane-left">
+            <div class="video-wrap">
+              <img id="video-openvla" class="video" alt="Live camera" />
+            </div>
+          </div>
+          <div
+            class="openvla-split-handle panel-col-split-handle"
+            id="openvla-split-handle"
+            role="separator"
+            tabindex="0"
+            aria-orientation="vertical"
+            aria-label="OpenVLA 영상과 설정 패널 너비 조절"
+          ></div>
+          <aside class="side-panel openvla-side panel-col-split-pane-right openvla-split-pane-right">
+            <div class="openvla-side-layout">
+              <nav
+                class="openvla-bookmarks"
+                id="openvla-bookmarks"
+                role="tablist"
+                aria-label="OpenVLA 사이드 패널"
+              >
+                <button
+                  type="button"
+                  class="openvla-bookmark is-active"
+                  id="openvla-bookmark-inference"
+                  role="tab"
+                  data-openvla-pane="inference"
+                  aria-selected="true"
+                  aria-controls="openvla-pane-inference"
+                >
+                  추론 실행
+                </button>
+                <button
+                  type="button"
+                  class="openvla-bookmark"
+                  id="openvla-bookmark-phases"
+                  role="tab"
+                  data-openvla-pane="phases"
+                  aria-selected="false"
+                  aria-controls="openvla-pane-phases"
+                >
+                  Phase 설정
+                </button>
+              </nav>
+              <div class="openvla-side-panes">
+                <div
+                  class="openvla-side-pane openvla-main-scroll"
+                  id="openvla-pane-inference"
+                  role="tabpanel"
+                  aria-labelledby="openvla-bookmark-inference"
+                >
+                  <div id="openvla-inference-panel" class="openvla-inference-body">
+                    <p id="openvla-load-banner" class="openvla-load-banner" role="status">
+                      openVLA 모델 로드 중
+                    </p>
+                    <h2 class="panel-group-title">작업 지시</h2>
+                    <div class="openvla-actions">
+                      <div class="openvla-instruction-wrap">
+                        <div class="openvla-instruction-combo">
+                          <input
+                            type="text"
+                            id="openvla-instruction"
+                            class="openvla-instruction"
+                            autocomplete="off"
+                            spellcheck="false"
+                            disabled
+                            placeholder="pick up the box"
+                            aria-expanded="false"
+                            aria-controls="openvla-instruction-list"
+                            aria-autocomplete="list"
+                          />
+                          <ul
+                            id="openvla-instruction-list"
+                            class="openvla-instruction-dropdown"
+                            role="listbox"
+                            hidden
+                          ></ul>
+                        </div>
+                      </div>
+                      <button type="button" id="openvla-run" class="btn-primary" disabled>
+                        추론
+                      </button>
+                    </div>
+                    <h2 class="panel-group-title panel-group-title--spaced">Phase 프로필</h2>
+                    <div class="openvla-inference-profile-row">
+                      <label class="openvla-inference-profile-auto">
+                        <input
+                          type="checkbox"
+                          id="openvla-inference-auto-tag"
+                          checked
+                        />
+                        <span>Tag를 통해 자동으로 프로필 선택</span>
+                      </label>
+                      <select
+                        id="openvla-inference-profile"
+                        class="openvla-inference-profile-select"
+                        aria-label="추론에 사용할 Phase 프로필"
+                      ></select>
+                    </div>
+                    <h2 class="panel-group-title panel-group-title--spaced">추론 결과</h2>
+                    <div class="openvla-results">
+                      <details class="openvla-raw-details">
+                        <summary class="openvla-raw-summary panel-group-title">Raw Data</summary>
+                        <pre id="openvla-action" class="mono openvla-raw-pre"></pre>
+                      </details>
+                      <dl class="openvla-result-metrics">
+                        <div class="openvla-metric-row">
+                          <dt>결과 Phase</dt>
+                          <dd id="openvla-result-phase">—</dd>
+                        </div>
+                        <div class="openvla-metric-row openvla-metric-row--phase-errors">
+                          <dt>Phase 관절값 오차</dt>
+                          <dd>
+                            <dl class="openvla-part-error-grid" aria-label="부위별 관절값 오차">
+                              <div class="openvla-part-error-cell">
+                                <dt>왼팔</dt>
+                                <dd class="openvla-part-error-value-wrap">
+                                  <span id="openvla-phase-err-left-arm">—</span>
+                                  <label class="openvla-part-move-check" title="이동에 포함">
+                                    <input
+                                      type="checkbox"
+                                      class="openvla-part-move-cb"
+                                      data-openvla-part="left_arm"
+                                      disabled
+                                    />
+                                  </label>
+                                </dd>
+                              </div>
+                              <div class="openvla-part-error-cell">
+                                <dt>오른팔</dt>
+                                <dd class="openvla-part-error-value-wrap">
+                                  <span id="openvla-phase-err-right-arm">—</span>
+                                  <label class="openvla-part-move-check" title="이동에 포함">
+                                    <input
+                                      type="checkbox"
+                                      class="openvla-part-move-cb"
+                                      data-openvla-part="right_arm"
+                                      disabled
+                                    />
+                                  </label>
+                                </dd>
+                              </div>
+                              <div class="openvla-part-error-cell">
+                                <dt>왼손</dt>
+                                <dd class="openvla-part-error-value-wrap">
+                                  <span id="openvla-phase-err-left-hand">—</span>
+                                  <label class="openvla-part-move-check" title="이동에 포함">
+                                    <input
+                                      type="checkbox"
+                                      class="openvla-part-move-cb"
+                                      data-openvla-part="left_hand"
+                                      disabled
+                                    />
+                                  </label>
+                                </dd>
+                              </div>
+                              <div class="openvla-part-error-cell">
+                                <dt>오른손</dt>
+                                <dd class="openvla-part-error-value-wrap">
+                                  <span id="openvla-phase-err-right-hand">—</span>
+                                  <label class="openvla-part-move-check" title="이동에 포함">
+                                    <input
+                                      type="checkbox"
+                                      class="openvla-part-move-cb"
+                                      data-openvla-part="right_hand"
+                                      disabled
+                                    />
+                                  </label>
+                                </dd>
+                              </div>
+                            </dl>
+                          </dd>
+                        </div>
+                      </dl>
+                      <div class="openvla-motion-bar">
+                        <label class="openvla-motion-speed">
+                          <span class="openvla-motion-speed-label">속도</span>
+                          <input
+                            type="number"
+                            id="openvla-motion-speed"
+                            class="openvla-motion-speed-input"
+                            min="0.05"
+                            max="1"
+                            step="0.01"
+                            value="0.05"
+                            aria-label="관절 이동 속도 rad/s"
+                          />
+                          <span class="openvla-motion-speed-unit">rad/s</span>
+                        </label>
+                        <button
+                          type="button"
+                          id="openvla-motion-move"
+                          class="btn-primary"
+                          disabled
+                        >
+                          결과 자세로 이동
+                        </button>
+                        <button type="button" id="openvla-motion-stop" class="btn-danger" disabled>
+                          중지
+                        </button>
+                      </div>
+                      <p
+                        class="openvla-motion-status"
+                        id="openvla-motion-status"
+                        hidden
+                      ></p>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="openvla-side-pane openvla-phase-pane"
+                  id="openvla-pane-phases"
+                  role="tabpanel"
+                  aria-labelledby="openvla-bookmark-phases"
+                  hidden
+                >
+                  <div class="openvla-phase-profile-group">
+                    <div class="openvla-phase-profiles-row">
+                      <span class="openvla-phase-profiles-label" id="openvla-phase-profiles-label"
+                        >프로필 선택</span
+                      >
+                      <div
+                        id="openvla-phase-profiles"
+                        class="openvla-phase-profiles"
+                        role="tablist"
+                        aria-labelledby="openvla-phase-profiles-label"
+                      ></div>
+                    </div>
+                    <section
+                      id="openvla-phase-profile-bundle"
+                      class="openvla-phase-profile-bundle"
+                      aria-labelledby="openvla-phase-profiles-label"
+                    >
+                      <div class="openvla-phase-hand-row">
+                        <label class="openvla-phase-hand-label" for="openvla-phase-hand-file"
+                          >핸드 자세</label
+                        >
+                        <select
+                          id="openvla-phase-hand-file"
+                          class="openvla-phase-hand-select"
+                          aria-label="이 프로필에서 사용할 핸드 자세 파일"
+                        ></select>
+                      </div>
+                      <h3 class="openvla-phase-board-title">Phase 목록</h3>
+                      <div
+                        id="openvla-phase-board"
+                        class="openvla-phase-board"
+                        role="region"
+                        aria-live="polite"
+                        aria-label="Phase 목록"
+                      ></div>
+                      <button type="button" id="openvla-phase-add" class="openvla-phase-add">
+                        Phase 추가
+                      </button>
+                      <div class="openvla-phase-tags-block">
+                        <div class="openvla-phase-tags-row">
+                          <span class="openvla-phase-tags-label">프로필 태그</span>
+                          <div
+                            id="openvla-phase-tags"
+                            class="openvla-phase-tags"
+                            aria-live="polite"
+                          ></div>
+                        </div>
+                        <input
+                          type="text"
+                          id="openvla-phase-tag-input"
+                          class="openvla-phase-tag-input"
+                          maxlength="48"
+                          spellcheck="false"
+                          placeholder="태그 입력 후 Enter (최대 5개)"
+                          aria-label="프로필 태그 입력"
+                        />
+                      </div>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section id="panel-lerobot" class="panel panel-col-split">
+          <div class="panel-col-split-pane-left">
+            <div class="video-wrap">
+              <img id="video-lerobot" class="video" alt="Live camera" />
+            </div>
+          </div>
+          <div
+            class="panel-col-split-handle"
+            id="lerobot-split-handle"
+            role="separator"
+            tabindex="0"
+            aria-orientation="vertical"
+            aria-label="LeRobot 영상과 설정 패널 너비 조절"
+          ></div>
+          <aside class="side-panel lerobot-panel panel-col-split-pane-right">
+            <div class="openvla-side-layout">
+              <nav
+                class="openvla-bookmarks"
+                id="lerobot-bookmarks"
+                role="tablist"
+                aria-label="LeRobot 사이드 패널"
+              >
+                <button
+                  type="button"
+                  class="openvla-bookmark is-active"
+                  id="lerobot-bookmark-run"
+                  role="tab"
+                  data-lerobot-pane="run"
+                  aria-selected="true"
+                  aria-controls="lerobot-pane-run"
+                >
+                  정책 실행
+                </button>
+                <button
+                  type="button"
+                  class="openvla-bookmark"
+                  id="lerobot-bookmark-hands"
+                  role="tab"
+                  data-lerobot-pane="hands"
+                  aria-selected="false"
+                  aria-controls="lerobot-pane-hands"
+                >
+                  핸드 매핑
+                </button>
+                <button
+                  type="button"
+                  class="openvla-bookmark"
+                  id="lerobot-bookmark-settings"
+                  role="tab"
+                  data-lerobot-pane="settings"
+                  aria-selected="false"
+                  aria-controls="lerobot-pane-settings"
+                >
+                  실행 설정
+                </button>
+              </nav>
+              <div class="openvla-side-panes">
+                <div
+                  class="openvla-side-pane lerobot-pane-run"
+                  id="lerobot-pane-run"
+                  role="tabpanel"
+                  aria-labelledby="lerobot-bookmark-run"
+                >
+                  <div class="lerobot-policy-block">
+                    <div class="lerobot-policy-head">
+                      <h2 class="panel-group-title">체크포인트</h2>
+                      <button
+                        type="button"
+                        id="lerobot-policy-refresh"
+                        class="btn-ghost lerobot-policy-refresh"
+                      >
+                        새로고침
+                      </button>
+                    </div>
+                    <div id="lerobot-policy-error" class="lerobot-policy-error" hidden></div>
+                    <ul id="lerobot-policy-list" class="lerobot-policy-list"></ul>
+                  </div>
+                  <details id="lerobot-targets-details" class="lerobot-targets-details" open>
+                    <summary class="panel-group-title lerobot-targets-summary">
+                      추론 · 목표 자세 (실시간)
+                    </summary>
+                    <div
+                      id="lerobot-targets-panel"
+                      class="lerobot-targets-panel"
+                      aria-live="polite"
+                    >
+                      정책 실행 중에 현재 명령 목표가 표시됩니다.
+                    </div>
+                  </details>
+                </div>
+                <div
+                  class="openvla-side-pane lerobot-pane-hands"
+                  id="lerobot-pane-hands"
+                  role="tabpanel"
+                  aria-labelledby="lerobot-bookmark-hands"
+                  hidden
+                >
+                  <div id="lerobot-hand-map-error" class="lerobot-policy-error" hidden></div>
+                  <ul id="lerobot-hand-map-list" class="lerobot-policy-list lerobot-hand-map-list"></ul>
+                </div>
+                <div
+                  class="openvla-side-pane"
+                  id="lerobot-pane-settings"
+                  role="tabpanel"
+                  aria-labelledby="lerobot-bookmark-settings"
+                  hidden
+                >
+                  <form id="lerobot-run-settings" class="lerobot-settings-form" autocomplete="off">
+                    <fieldset class="lerobot-settings-group">
+                      <legend class="panel-group-title">동작 속도</legend>
+                      <label class="lerobot-settings-row lerobot-settings-row--speed">
+                        <span>속도</span>
+                        <input
+                          type="range"
+                          id="lerobot-motion-speed"
+                          name="motion_speed"
+                          min="0.002"
+                          max="0.05"
+                          step="0.001"
+                          value="0.012"
+                        />
+                        <input
+                          type="number"
+                          class="lerobot-motion-speed-num"
+                          name="motion_speed_precise"
+                          min="0.002"
+                          max="0.05"
+                          step="0.001"
+                          value="0.012"
+                          aria-label="동작 속도 숫자 입력"
+                        />
+                        <output
+                          class="lerobot-settings-unit"
+                          id="lerobot-speed-summary"
+                          for="lerobot-motion-speed"
+                        >
+                          0.012 rad/tick
+                        </output>
+                      </label>
+                    </fieldset>
+                    <details class="lerobot-settings-advanced" id="lerobot-settings-advanced">
+                      <summary class="lerobot-settings-advanced-summary">고급 설정</summary>
+                      <div class="lerobot-settings-advanced-body">
+                        <fieldset class="lerobot-settings-group">
+                          <legend class="panel-group-title">속도 · 주기</legend>
+                          <label class="lerobot-settings-row">
+                            <span>명령 전송 (publish_hz)</span>
+                            <input type="number" name="publish_hz" step="0.05" min="0.1" />
+                            <span class="lerobot-settings-unit">Hz</span>
+                          </label>
+                          <label class="lerobot-settings-row">
+                            <span>추론 (inference_hz)</span>
+                            <input type="number" name="inference_hz" step="0.05" min="0.05" />
+                            <span class="lerobot-settings-unit">Hz</span>
+                          </label>
+                          <label class="lerobot-settings-row">
+                            <span>워밍업</span>
+                            <input type="number" name="warming_up_time" step="0.05" min="0" />
+                            <span class="lerobot-settings-unit">s</span>
+                          </label>
+                          <label class="lerobot-settings-row">
+                            <span>waypoint approach</span>
+                            <input
+                              type="number"
+                              name="waypoint_approach_rad"
+                              step="0.005"
+                              min="0.02"
+                              value="0.05"
+                            />
+                            <span class="lerobot-settings-unit">rad</span>
+                          </label>
+                        </fieldset>
+                        <fieldset class="lerobot-settings-group">
+                          <legend class="panel-group-title">완료 · 이미지</legend>
+                          <label class="lerobot-settings-row">
+                            <span>최소 실행 시간</span>
+                            <input type="number" name="min_run_time_before_complete" step="1" min="0" />
+                            <span class="lerobot-settings-unit">s</span>
+                          </label>
+                          <label class="lerobot-settings-row">
+                            <span>최대 이미지 지연</span>
+                            <input type="number" name="max_image_age_s" step="0.1" min="0.05" />
+                            <span class="lerobot-settings-unit">s</span>
+                          </label>
+                          <label class="lerobot-settings-row">
+                            <span>그리퍼 임계값</span>
+                            <input type="number" name="gripper_threshold" step="0.05" min="0" max="1" />
+                          </label>
+                        </fieldset>
+                        <fieldset class="lerobot-settings-group">
+                          <legend class="panel-group-title">팔 동작 스무딩</legend>
+                          <label class="lerobot-settings-row lerobot-settings-row--check">
+                            <input type="checkbox" name="arm_pp_enabled" />
+                            <span>arm_action_postprocess 사용</span>
+                          </label>
+                          <label class="lerobot-settings-row">
+                            <span>min_cutoff</span>
+                            <input type="number" name="arm_min_cutoff" step="0.05" min="0.01" />
+                          </label>
+                          <label class="lerobot-settings-row">
+                            <span>derivative_cutoff</span>
+                            <input type="number" name="arm_derivative_cutoff" step="0.05" min="0.01" />
+                          </label>
+                          <label class="lerobot-settings-row">
+                            <span>beta</span>
+                            <input type="number" name="arm_beta" step="0.005" min="0" />
+                          </label>
+                        </fieldset>
+                        <fieldset class="lerobot-settings-group">
+                          <legend class="panel-group-title">실행 옵션</legend>
+                          <label class="lerobot-settings-row">
+                            <span>전체 타임아웃</span>
+                            <input type="number" name="timeout" step="1" />
+                            <span class="lerobot-settings-unit">s (−1 무제한)</span>
+                          </label>
+                          <label class="lerobot-settings-row lerobot-settings-row--check">
+                            <input type="checkbox" name="skip_warmup" />
+                            <span>워밍업 생략</span>
+                          </label>
+                        </fieldset>
+                        <div class="lerobot-settings-actions lerobot-settings-actions--advanced">
+                          <button type="button" id="lerobot-settings-optimize" class="btn-ghost">
+                            값 최적화
+                          </button>
+                          <button type="button" id="lerobot-settings-reset" class="btn-ghost">
+                            템플릿 기본값
+                          </button>
+                        </div>
+                      </div>
+                    </details>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section id="panel-dev" class="panel">
+          <div class="dev-shell">
+            <div class="dev-layout">
+              <div class="dev-card dev-card-wide">
+                <div id="dev-profile" class="config-profile"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="panel-planner" class="panel panel-col-split">
+          <div class="panel-col-split-pane-left">
+            <div class="video-wrap">
+              <img id="video-planner" class="video" alt="YOLO live view" />
+            </div>
+          </div>
+          <div
+            class="panel-col-split-handle"
+            id="planner-split-handle"
+            role="separator"
+            tabindex="0"
+            aria-orientation="vertical"
+            aria-label="Task Planner 영상과 설정 패널 너비 조절"
+          ></div>
+          <aside class="side-panel planner-side panel-col-split-pane-right">
+            <div class="openvla-side-layout">
+              <nav
+                class="openvla-bookmarks"
+                id="planner-bookmarks"
+                role="tablist"
+                aria-label="Task Planner 사이드 패널"
+              >
+                <button
+                  type="button"
+                  class="openvla-bookmark is-active"
+                  id="planner-bookmark-run"
+                  role="tab"
+                  data-planner-pane="run"
+                  aria-selected="true"
+                  aria-controls="planner-pane-run"
+                >
+                  Task 실행
+                </button>
+                <button
+                  type="button"
+                  class="openvla-bookmark"
+                  id="planner-bookmark-settings"
+                  role="tab"
+                  data-planner-pane="settings"
+                  aria-selected="false"
+                  aria-controls="planner-pane-settings"
+                >
+                  Task 설정
+                </button>
+              </nav>
+              <div class="openvla-side-panes">
+                <div
+                  class="openvla-side-pane planner-run-pane"
+                  id="planner-pane-run"
+                  role="tabpanel"
+                  aria-labelledby="planner-bookmark-run"
+                >
+                  <div class="planner-run-stack">
+                  <div class="planner-card planner-yolo">
+                    <p class="panel-group-title planner-label">탐지 객체 개요</p>
+                    <hr class="planner-card-divider" />
+                    <p class="planner-meta" id="planner-yolo-meta" hidden></p>
+                    <dl
+                      id="planner-yolo-overview"
+                      class="openvla-result-metrics planner-yolo-det-metrics planner-model-body"
+                      aria-live="polite"
+                    ></dl>
+                  </div>
+                  <div class="planner-card planner-inference">
+                    <p class="panel-group-title planner-label">OpenVLA 추론 결과</p>
+                    <hr class="planner-card-divider" />
+                    <p class="planner-meta" id="planner-openvla-meta" hidden></p>
+                    <dl
+                      class="openvla-result-metrics planner-openvla-profile-metric"
+                      aria-label="OpenVLA Phase 프로필"
+                    >
+                      <div class="openvla-metric-row planner-openvla-phase-row">
+                        <dt>선택된 Phase 프로필</dt>
+                        <dd id="planner-openvla-phase-profile">—</dd>
+                      </div>
+                    </dl>
+                    <div class="planner-inference-grid" id="planner-inference-grid" hidden>
+                      <dl class="openvla-result-metrics planner-openvla-phase-metrics">
+                        <div class="openvla-metric-row planner-openvla-phase-row">
+                          <dt>다음 Phase</dt>
+                          <dd id="planner-predicted-phase">—</dd>
+                        </div>
+                        <div class="openvla-metric-row openvla-metric-row--phase-errors">
+                          <dt>Phase 관절값 오차</dt>
+                          <dd>
+                            <dl class="openvla-part-error-grid" aria-label="부위별 관절값 오차">
+                              <div class="openvla-part-error-cell">
+                                <dt>왼팔</dt>
+                                <dd><span id="planner-openvla-phase-err-left-arm">—</span></dd>
+                              </div>
+                              <div class="openvla-part-error-cell">
+                                <dt>오른팔</dt>
+                                <dd><span id="planner-openvla-phase-err-right-arm">—</span></dd>
+                              </div>
+                              <div class="openvla-part-error-cell">
+                                <dt>왼손</dt>
+                                <dd><span id="planner-openvla-phase-err-left-hand">—</span></dd>
+                              </div>
+                              <div class="openvla-part-error-cell">
+                                <dt>오른손</dt>
+                                <dd><span id="planner-openvla-phase-err-right-hand">—</span></dd>
+                              </div>
+                            </dl>
+                          </dd>
+                        </div>
+                      </dl>
+                    </div>
+                  </div>
+                  <div class="planner-card planner-lerobot">
+                    <p class="panel-group-title planner-label">LeRobot 추론 결과</p>
+                    <hr class="planner-card-divider" />
+                    <p
+                      id="planner-lerobot-match"
+                      class="planner-lerobot-match"
+                      aria-live="polite"
+                    >
+                      —
+                    </p>
+                  </div>
+                  </div>
+                  <div class="planner-card planner-task-controls">
+                    <label class="planner-task-command-field" for="planner-task-command">
+                      <span class="planner-sublabel planner-task-command-label">명령어</span>
+                      <input
+                        type="text"
+                        id="planner-task-command"
+                        class="planner-task-command"
+                        autocomplete="off"
+                        spellcheck="false"
+                        placeholder="pick up the box"
+                      />
+                    </label>
+                    <div class="planner-task-actions">
+                      <button type="button" class="btn-primary" id="planner-task-start">
+                        Task 시작
+                      </button>
+                      <button type="button" class="btn-danger" id="planner-task-stop" disabled>
+                        Stop
+                      </button>
+                    </div>
+                  </div>
+                  <div class="planner-card planner-task-log-card">
+                    <p class="panel-group-title planner-label">작업 로그</p>
+                    <hr class="planner-card-divider" />
+                    <pre
+                      id="planner-task-log"
+                      class="planner-task-log mono is-placeholder"
+                      aria-live="polite"
+                    >Task 시작을 누르면 작업 로그가 표시됩니다.</pre>
+                  </div>
+                </div>
+                <div
+                  class="openvla-side-pane planner-settings-pane"
+                  id="planner-pane-settings"
+                  role="tabpanel"
+                  aria-labelledby="planner-bookmark-settings"
+                  hidden
+                >
+                  <div class="planner-settings-stack">
+                    <div class="planner-card planner-task-settings-card">
+                      <p class="panel-group-title planner-label">
+                        추론 조건 → LeRobot Policy
+                      </p>
+                      <hr class="planner-card-divider" />
+                      <p class="planner-meta planner-task-settings-hint">
+                        OpenVLA Phase 프로필·다음 Phase와 YOLO 탐지 클래스·개수가 맞을 때
+                        실행할 Policy를 <code>models/LeRobot</code> 체크포인트 중에서
+                        선택합니다. 위에서 아래 순으로 조건을 검사합니다.
+                      </p>
+                      <ul
+                        id="planner-task-rules-list"
+                        class="planner-task-rules-list"
+                        aria-live="polite"
+                      ></ul>
+                      <button
+                        type="button"
+                        class="btn-ghost planner-task-rule-add"
+                        id="planner-task-rule-add"
+                      >
+                        조건 추가
+                      </button>
+                      <p
+                        id="planner-task-settings-status"
+                        class="planner-meta"
+                        hidden
+                      ></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </section>
+      </main>
+      </div>
+    </div>
+    <script src="/assets/app.js" type="module"></script>
+  </body>
+</html>
