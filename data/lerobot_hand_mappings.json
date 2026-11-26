@@ -1,0 +1,19 @@
+{
+  "selections": {
+    "run_simple_big_empty_box_2_20261114": "big-box-hand-poses.json",
+    "run_big_empty_box_20261115": "big-box-hand-poses.json",
+    "run_green_empty_box_20261115": "small-box-hand-poses.json",
+    "run_grey_empty_box_20261115": "small-box-hand-poses.json",
+    "run_navy_empty_box_20261115": "small-box-hand-poses.json",
+    "run_small_empty_box_20261115": "small-box-hand-poses.json",
+    "run_green_box_policy_1_20261117": "small-box-hand-poses.json",
+    "run_small_box_policy_1_20261118": "small-box-hand-poses.json",
+    "run_small_box_policy_2_20261118": "small-box-hand-poses.json",
+    "run_small_box_policy_3_20261121": "small-box-hand-poses.json",
+    "run_yellow_box_policy_1_20261117": "big-box-hand-poses.json",
+    "run_yellow_box_policy_2_(retry)_20261118": "big-box-hand-poses.json",
+    "run_yellow_box_policy_3_20261121": "big-box-hand-poses.json",
+    "run_small_box_policy_1_(hand_O)_20261123": "small-box-hand-poses.json",
+    "run_small_box_policy_2_(hand_O)_20261123": "small-box-hand-poses.json"
+  }
+}

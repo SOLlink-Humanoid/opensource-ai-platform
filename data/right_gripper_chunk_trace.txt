@@ -1,0 +1,4 @@
+# Enqueued RIGHT_GRIPPER scalar per queue step (one line = one waypoint)
+# session_start=2026-11-23T14:20:03 policy=run_small_box_policy_1_20261118
+# absolute_path=/home/agi/app/openvla-script/opensource-ai-platform/data/right_gripper_chunk_trace.txt
+# Data below appears after the first chunk with any step >= 0.27
