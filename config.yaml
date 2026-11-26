@@ -1,0 +1,58 @@
+# Active profile for this Agibot G2 / NVIDIA Thor.
+# mode robot uses the GDK head camera, joint state, and CUDA.
+
+mode: robot
+
+server:
+  host: 0.0.0.0
+  port: 8095
+
+paths:
+  vla_root: .
+  # UI·탭 설정 JSON은 platform/config/ 아래 (yolo, openvla, lerobot, planner). hand_poses는 bridge 공유 경로.
+  yolo_model: models/YOLO11/best.pt
+  openvla_root: models/OpenVLA
+  # Inference always uses the newest models/OpenVLA/vN with config.json (currently v2).
+  # Optional pin only when OPENVLA_PRELOAD is set before startup:
+  # openvla_version: v2
+  poses_file: ../poses/full_body_poses
+  phases_file: config/openvla/phases.json
+  hand_poses_dir: ../poses/hand_poses
+
+openvla:
+  enabled: true
+  instruction: pick up the box
+  interval_sec: 2.5
+  device: cuda
+  live: true
+
+robot:
+  openvla_device: cuda
+  yolo_device: cuda
+  action_arm: left_arm
+
+lerobot:
+  act_placeholder: true
+  # device: cuda   # 생략 시 이 PC에서 CUDA 가능하면 cuda, 아니면 cpu (Configuration에 표시)
+
+yolo:
+  enabled: true
+  confidence: 0.7
+  image_size: 640
+  interval_sec: 0.2
+  device: cuda
+
+# camera_stream 미사용 시 GDK 폴링. 필요 시 auto: true 로 릴레이 복구
+camera_stream:
+  auto: false
+  base_url: http://127.0.0.1:8003
+
+studio:
+  raw_preview_when_peers_up: false
+  data_logger_url: http://127.0.0.1:8002
+
+# OpenVLA / LeRobot 실시간 화면 및 추론 입력 (head_color · head_depth 공통)
+head_camera:
+  resize_shape: [400, 640]
+  crop_start_xy: [10, 90]
+  crop_shape: [300, 620]
