@@ -1,0 +1,175 @@
+{
+  "_comment": [
+    "OAP 공통 LeRobot ACT 배포 설정. model_path / name / task_description 은 실행 시 models/LeRobot/<checkpoint>/ 에서 채운다.",
+    "벡터 배치의 기준 파일은 shared/model_action_layout.json 이다. 로드할 때 state_order, action.order, grippers, oap_model_contract 차원은 그 파일로 덮어쓴다.",
+    "공통 16차원: LEFT_ARM(7) + RIGHT_ARM(7) + LEFT_GRIPPER(1) + RIGHT_GRIPPER(1). OpenVLA는 뒤에 PHASE 1차원을 붙인다.",
+    "양 손은 OmniHand 10관절이 아니라 그리퍼 스칼라 1차원씩(0=열림, 1=닫힘). 명령은 hand_preset 으로 10-DOF 손 자세로 변환.",
+    "관측 그리퍼: hand_key_poses 있으면 측정 손 10관절에 가장 가까운 pose key(0.1~). 없으면 /gripper/*/grip Int32.",
+    "이미지: head_color + head_depth 만 (각 3×300×620).",
+    "체크포인트 config.json 이 oap_model_contract 와 다르면 UI에서 실행 불가.",
+    "16DOF ACT: chunk 모드(학습 temporal_ensemble_coeff=null 과 일치). publish 2.5Hz 이하만 허용."
+  ],
+  "oap_model_contract": {
+    "state_dim": 16,
+    "action_dim": 16,
+    "state_order_summary": "LEFT_ARM(7) + RIGHT_ARM(7) + LEFT_GRIPPER(1) + RIGHT_GRIPPER(1)",
+    "input_features": {
+      "observation.state": [16],
+      "action": [16],
+      "observation.images.head_color": [3, 300, 620],
+      "observation.images.head_depth": [3, 300, 620]
+    }
+  },
+  "observation": {
+    "state_order": [
+      "LEFT_ARM",
+      "RIGHT_ARM",
+      "LEFT_GRIPPER",
+      "RIGHT_GRIPPER"
+    ],
+    "images": [
+      {
+        "component": "CAMERA_HEAD",
+        "obs_key": "head_color",
+        "resize_shape": [400, 640],
+        "crop_start_xy": [10, 90],
+        "crop_shape": [300, 620]
+      },
+      {
+        "component": "CAMERA_HEAD_DEPTH",
+        "obs_key": "head_depth",
+        "resize_shape": [400, 640],
+        "crop_start_xy": [10, 90],
+        "crop_shape": [300, 620],
+        "depth_preprocess": {
+          "algorithm": "clip_normalize_turbo_rgb",
+          "depth_unit": "mm",
+          "invalid_value": 0,
+          "vmin": 300.0,
+          "vmax": 2000.0
+        }
+      }
+    ]
+  },
+  "action": {
+    "order": [
+      "LEFT_ARM",
+      "RIGHT_ARM",
+      "LEFT_GRIPPER",
+      "RIGHT_GRIPPER"
+    ],
+    "gripper_threshold": 0.5
+  },
+  "complete_conditions": [
+    {
+      "type": "TIME_BASED",
+      "duration": 480.0
+    }
+  ],
+  "runtime": {
+    "inference_mode": "chunk",
+    "reinfer_threshold": 1,
+    "action_chunk_execute_steps": 50,
+    "action_chunk_skip_first_steps": 2,
+    "clear_action_queue_on_reinfer": true,
+    "inference_hz": 2.5,
+    "publish_hz": 2.5,
+    "max_publish_hz": 2.5,
+    "motion_speed": 0.012,
+    "publish_consume": {
+      "mode": "on_settle",
+      "waypoint_settle_rad": 0.02,
+      "waypoint_approach_rad": 0.05,
+      "waypoint_dwell_timeout_s": 0,
+      "publish_poll_s": 0.015,
+      "max_waypoint_pop_hz": 25,
+      "hold_republish_while_waiting": true,
+      "hold_republish_period_s": 0.2
+    },
+    "warming_up_time": 0.3,
+    "min_run_time_before_complete": 160.0,
+    "state_wait_timeout": 15.0,
+    "max_image_age_s": 1.0,
+    "arm_action_postprocess": {
+      "enabled": false,
+      "min_cutoff": 0.18,
+      "beta": 0.005,
+      "derivative_cutoff": 0.22
+    },
+    "arm_live_guard": {
+      "enabled": false,
+      "max_ahead_rad": 0.055,
+      "max_behind_rad": 0.1
+    },
+    "publish_target_blend": {
+      "enabled": false,
+      "alpha": 0.38
+    },
+    "hand_key_selection": {
+      "enabled": true,
+      "key_confidence_margin": 0.03,
+      "scalar_ema_alpha": 1.0,
+      "hold_publish_ticks_on_chunk_append": 10,
+      "downgrade_to_min_key_max_scalar": 0.11,
+      "waypoint_gripper_gray_err_rad": 0.01,
+      "force_nearest_key_min_scalar_delta": 0.15
+    },
+    "profile_inference": false,
+    "save_inference_images": false,
+    "save_all_inference_images": false,
+    "stream_inference_images": true,
+    "stream_inference_images_port": 8004,
+    "stream_inference_images_hz": 2.5,
+    "lerobot_action_log": {
+      "enabled": true,
+      "path": null,
+      "publish_sample_every": 10
+    },
+    "action_chunk_prefix_fix": {
+      "enabled": true,
+      "on_append_only": true,
+      "reference": "live_state",
+      "max_joint_shift_rad": 0.35,
+      "min_shift_rad": 0.002,
+      "blend_steps": 4
+    },
+    "chunk_queue_splice": {
+      "enabled": false,
+      "on_append_only": true,
+      "reverse_projection_rad": 0.02,
+      "min_forward_norm": 0.005,
+      "min_actions_after_trim": 1,
+      "defer_until_settle": true,
+      "defer_finish_rad": 0.025,
+      "gripper_weight": 0.15,
+      "hand_weight": 0.25
+    },
+    "waist_chunk_prefix_fix": {
+      "enabled": false
+    }
+  },
+  "grippers": {
+    "LEFT_GRIPPER": {
+      "side": "left",
+      "command_mode": "hand_preset",
+      "state_source": "scalar_topic",
+      "state_topic_key": "left_gripper",
+      "command_topic_key": null,
+      "open_value": 0,
+      "close_value": 1,
+      "open_preset": [0.0, 1.6, -0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      "close_preset": [0.0, 1.6, -0.7, 0.0, 0.6, 0.6, 0.0, 0.6, 0.0, 0.6]
+    },
+    "RIGHT_GRIPPER": {
+      "side": "right",
+      "command_mode": "hand_preset",
+      "state_source": "scalar_topic",
+      "state_topic_key": "right_gripper",
+      "command_topic_key": null,
+      "open_value": 0,
+      "close_value": 1,
+      "open_preset": [0.0, -1.6, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      "close_preset": [0.0, -1.6, 0.7, 0.0, 0.6, 0.6, 0.0, 0.6, 0.0, 0.6]
+    }
+  }
+}

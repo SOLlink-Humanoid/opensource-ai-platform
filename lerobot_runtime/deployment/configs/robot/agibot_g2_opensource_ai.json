@@ -1,0 +1,329 @@
+{
+  "_comment": [
+    "16DOF LeRobot: publish 2.5Hz 이하. GDK arm_lead 는 보수적으로(현재 속도보다 빠르지 않게).",
+    "AgiBot G2 관절과 카메라는 ROS가 아니다. 벤더 SDK(agibot_gdk)가 로봇",
+    "로컬 공유메모리에서 읽어오므로, 이 config 로 도는 정책은 반드시 로봇 온보드에서",
+    "source /home/agi/app/env.sh 를 거친 뒤 실행해야 한다.",
+    "몸통·카메라 topic 문자열은 ROS 토픽이 아니라 어떤 GDK 호출을 쓰는지 적어둔 것이다.",
+    "카메라는 gdk_camera_id 로 agibot_gdk.CameraType 멤버를 지정한다.",
+    "손은 별도 명령 API가 없다. get_end_state로 읽고, 팔과 같은 joint_servo_control 프레임에 실어 보낸다.",
+    "그리퍼 0/1 관측만 ROS 토픽이다. 손가락 명령은 정책 preset 이 joint_servo_control 로 나간다."
+  ],
+  "robot_name": "agibot_g2_opensource_ai",
+  "adapter": "agibot_g2",
+  "control": {
+    "publish_hz": 20.0
+  },
+  "gdk": {
+    "_comment": "target_timeout 0.4s; 만료 시 동일 목표 re-stamp(keepalive)로 slew 유지. direct_targets=false → motion_speed(arm_lead).",
+    "state_poll_hz": 50.0,
+    "command_hz": 100.0,
+    "camera_poll_hz": 30.0,
+    "control_period": 0.02,
+    "enable_low_latency": false,
+    "settle_sec": 2.0,
+    "camera_warmup_sec": 2.0,
+    "camera_timeout_ms": 1000.0,
+    "joint_limit_margin_rad": 0.03,
+    "state_stale_timeout_sec": 0.1,
+    "target_timeout_sec": 0.4,
+    "direct_targets": false,
+    "arm_lead_rad": 0.02,
+    "waist_lead_rad": 0.02,
+    "head_velocity_rad_s": 1.5,
+    "finger_velocity_rad_s": 4.0
+  },
+  "qos": {
+    "_comment": "GDK 는 DDS QoS 를 쓰지 않는다. 공용 스키마가 요구해서 남겨둔 자리다.",
+    "publisher": {
+      "reliability": "RELIABLE",
+      "history": "KEEP_LAST",
+      "depth": 10,
+      "durability": "VOLATILE"
+    },
+    "subscriber": {
+      "reliability": "BEST_EFFORT",
+      "history": "KEEP_LAST",
+      "depth": 10,
+      "durability": "VOLATILE"
+    }
+  },
+  "pd_params": {
+    "head": {
+      "kp": 20.0,
+      "kd": 2.0
+    },
+    "arm": {
+      "kp": 20.0,
+      "kd": 2.0
+    }
+  },
+  "topics": {
+    "states": {
+      "head": {
+        "enabled": true,
+        "topic": "gdk://get_joint_states",
+        "message_type": "agibot_gdk/JointStates"
+      },
+      "arm": {
+        "enabled": true,
+        "topic": "gdk://get_joint_states",
+        "message_type": "agibot_gdk/JointStates"
+      },
+      "hand": {
+        "enabled": true,
+        "topic": "gdk://get_end_state",
+        "message_type": "agibot_gdk/EndState"
+      },
+      "left_hand": {
+        "enabled": false,
+        "topic": null,
+        "message_type": null
+      },
+      "right_hand": {
+        "enabled": false,
+        "topic": null,
+        "message_type": null
+      },
+      "left_gripper": {
+        "enabled": true,
+        "topic": "/gripper/left/grip",
+        "message_type": "std_msgs/Int32"
+      },
+      "right_gripper": {
+        "enabled": true,
+        "topic": "/gripper/right/grip",
+        "message_type": "std_msgs/Int32"
+      }
+    },
+    "commands": {
+      "head": {
+        "enabled": true,
+        "topic": "gdk://move_head_joint_servo",
+        "message_type": "agibot_gdk/HeadJointServo"
+      },
+      "arm": {
+        "enabled": true,
+        "topic": "gdk://joint_servo_control",
+        "message_type": "agibot_gdk/JointServoControlReq"
+      },
+      "hand": {
+        "enabled": false,
+        "topic": null,
+        "message_type": null
+      },
+      "left_hand": {
+        "enabled": false,
+        "topic": null,
+        "message_type": null
+      },
+      "right_hand": {
+        "enabled": false,
+        "topic": null,
+        "message_type": null
+      },
+      "left_gripper": {
+        "enabled": false,
+        "topic": null,
+        "message_type": null
+      },
+      "right_gripper": {
+        "enabled": false,
+        "topic": null,
+        "message_type": null
+      }
+    },
+    "cameras": {
+      "CAMERA_HEAD": {
+        "enabled": true,
+        "topic": "gdk://kHeadColor",
+        "message_type": "agibot_gdk/CameraImage",
+        "gdk_camera_id": "kHeadColor",
+        "source_shape": [400, 640, 3]
+      },
+      "CAMERA_HAND_LEFT": {
+        "enabled": true,
+        "topic": "gdk://kHandLeftColor",
+        "message_type": "agibot_gdk/CameraImage",
+        "gdk_camera_id": "kHandLeftColor",
+        "source_shape": [1056, 1280, 3]
+      },
+      "CAMERA_HAND_RIGHT": {
+        "enabled": true,
+        "topic": "gdk://kHandRightColor",
+        "message_type": "agibot_gdk/CameraImage",
+        "gdk_camera_id": "kHandRightColor",
+        "source_shape": [1056, 1280, 3]
+      },
+      "CAMERA_HEAD_DEPTH": {
+        "enabled": true,
+        "topic": "gdk://kHeadDepth",
+        "message_type": "agibot_gdk/CameraImage",
+        "gdk_camera_id": "kHeadDepth",
+        "source_shape": [400, 640, 1]
+      }
+    }
+  },
+  "joints": {
+    "_comment": "get_joint_states()는 name으로 매핑한다. 이름이 없는 구형 GDK만 waist→head→left_arm→right_arm 순서를 fallback으로 쓴다.",
+    "head": {
+      "ids": [1, 2, 3],
+      "order": [
+        "idx11_head_joint1",
+        "idx12_head_joint2",
+        "idx13_head_joint3"
+      ],
+      "limits": [
+        [-1.5707, 1.5707],
+        [-0.349, 0.349],
+        [-0.5236, 0.5236]
+      ]
+    },
+    "waist": {
+      "ids": [101, 102, 103, 104, 105],
+      "order": [
+        "idx01_body_joint1",
+        "idx02_body_joint2",
+        "idx03_body_joint3",
+        "idx04_body_joint4",
+        "idx05_body_joint5"
+      ],
+      "limits": [
+        [-1.0821, 0.0],
+        [0.0, 2.6529],
+        [-1.919, 1.117],
+        [-0.436332313, 0.436332313],
+        [-3.045599545, 3.045599545]
+      ]
+    },
+    "arm": {
+      "ids": [11, 12, 13, 14, 15, 16, 17, 21, 22, 23, 24, 25, 26, 27],
+      "full_order": [
+        "idx21_arm_l_joint1",
+        "idx22_arm_l_joint2",
+        "idx23_arm_l_joint3",
+        "idx24_arm_l_joint4",
+        "idx25_arm_l_joint5",
+        "idx26_arm_l_joint6",
+        "idx27_arm_l_joint7",
+        "idx61_arm_r_joint1",
+        "idx62_arm_r_joint2",
+        "idx63_arm_r_joint3",
+        "idx64_arm_r_joint4",
+        "idx65_arm_r_joint5",
+        "idx66_arm_r_joint6",
+        "idx67_arm_r_joint7"
+      ]
+    },
+    "left_arm": {
+      "ids": [11, 12, 13, 14, 15, 16, 17],
+      "order": [
+        "idx21_arm_l_joint1",
+        "idx22_arm_l_joint2",
+        "idx23_arm_l_joint3",
+        "idx24_arm_l_joint4",
+        "idx25_arm_l_joint5",
+        "idx26_arm_l_joint6",
+        "idx27_arm_l_joint7"
+      ],
+      "limits": [
+        [-3.071796937, 3.071796937],
+        [-2.059505971, 2.059505971],
+        [-3.071796937, 3.071796937],
+        [-2.495838284, 1.012308419],
+        [-3.071796937, 3.071796937],
+        [-1.012308419, 1.012308419],
+        [-1.535907195, 1.535907195]
+      ]
+    },
+    "right_arm": {
+      "ids": [21, 22, 23, 24, 25, 26, 27],
+      "order": [
+        "idx61_arm_r_joint1",
+        "idx62_arm_r_joint2",
+        "idx63_arm_r_joint3",
+        "idx64_arm_r_joint4",
+        "idx65_arm_r_joint5",
+        "idx66_arm_r_joint6",
+        "idx67_arm_r_joint7"
+      ],
+      "limits": [
+        [-3.071796937, 3.071796937],
+        [-2.059505971, 2.059505971],
+        [-3.071796937, 3.071796937],
+        [-2.495838284, 1.012308419],
+        [-3.071796937, 3.071796937],
+        [-1.012308419, 1.012308419],
+        [-1.535907195, 1.535907195]
+      ]
+    },
+    "hand": {
+      "_comment": "OmniHand 10 DOF. G2 몸통에 X2 OmniHand 를 붙인 구성이다.",
+      "order": [
+        "thumb_roll",
+        "thumb_abad",
+        "thumb_mcp",
+        "index_abad",
+        "index_pip",
+        "middle_pip",
+        "ring_abad",
+        "ring_pip",
+        "pinky_abad",
+        "pinky_pip"
+      ]
+    },
+    "left_hand": {
+      "_comment": "get_end_state().left_end_state 의 names 와 정확히 일치해야 한다.",
+      "order": [
+        "idx31_hand_l_thumb_roll_joint",
+        "idx32_hand_l_thumb_abad_joint",
+        "idx33_hand_l_thumb_mcp_joint",
+        "idx36_hand_l_index_abad_joint",
+        "idx37_hand_l_index_pip_joint",
+        "idx39_hand_l_middle_pip_joint",
+        "idx41_hand_l_ring_abad_joint",
+        "idx42_hand_l_ring_pip_joint",
+        "idx44_hand_l_pinky_abad_joint",
+        "idx45_hand_l_pinky_pip_joint"
+      ],
+      "limits": [
+        [-1.12137, 0.02967],
+        [-0.04538, 1.64235],
+        [-0.8416, 0.0],
+        [0.0, 0.16406],
+        [0.0, 1.48353],
+        [0.0, 1.48353],
+        [-0.1693, 0.0],
+        [0.0, 1.48353],
+        [-0.185, 0.0],
+        [0.0, 1.48353]
+      ]
+    },
+    "right_hand": {
+      "order": [
+        "idx71_hand_r_thumb_roll_joint",
+        "idx72_hand_r_thumb_abad_joint",
+        "idx73_hand_r_thumb_mcp_joint",
+        "idx76_hand_r_index_abad_joint",
+        "idx77_hand_r_index_pip_joint",
+        "idx79_hand_r_middle_pip_joint",
+        "idx81_hand_r_ring_abad_joint",
+        "idx82_hand_r_ring_pip_joint",
+        "idx84_hand_r_pinky_abad_joint",
+        "idx85_hand_r_pinky_pip_joint"
+      ],
+      "limits": [
+        [-0.02967, 1.12137],
+        [-1.64235, 0.04538],
+        [0.0, 0.8416],
+        [-0.16406, 0.0],
+        [0.0, 1.48353],
+        [0.0, 1.48353],
+        [0.0, 0.1693],
+        [0.0, 1.48353],
+        [0.0, 0.185],
+        [0.0, 1.48353]
+      ]
+    }
+  }
+}
