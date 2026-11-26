@@ -1,0 +1,93 @@
+{
+  "_comment": [
+    "LeRobot ACT와 OpenVLA가 같은 에피소드에서 쓰는 출력 벡터 배치.",
+    "공통 16차원: LEFT_ARM(7) + RIGHT_ARM(7) + LEFT_GRIPPER(1) + RIGHT_GRIPPER(1).",
+    "허리·머리 관절은 포함하지 않는다. 양손은 OmniHand 10관절이 아니라 hand-pose 스칼라 1개(0=열림, 1=닫힘)씩.",
+    "OpenVLA는 이 16차원 뒤에 PHASE 1차원을 붙여 17차원을 출력한다.",
+    "추론 후처리는 이 파일을 읽는다. lerobot_runtime/agibot_g2_act.json 의 order/grippers 는 로드 시 이 내용으로 덮어쓴다."
+  ],
+  "gripper_threshold": 0.5,
+  "channels": [
+    {
+      "id": "LEFT_ARM",
+      "kind": "joints",
+      "joints": [
+        "idx21_arm_l_joint1",
+        "idx22_arm_l_joint2",
+        "idx23_arm_l_joint3",
+        "idx24_arm_l_joint4",
+        "idx25_arm_l_joint5",
+        "idx26_arm_l_joint6",
+        "idx27_arm_l_joint7"
+      ]
+    },
+    {
+      "id": "RIGHT_ARM",
+      "kind": "joints",
+      "joints": [
+        "idx61_arm_r_joint1",
+        "idx62_arm_r_joint2",
+        "idx63_arm_r_joint3",
+        "idx64_arm_r_joint4",
+        "idx65_arm_r_joint5",
+        "idx66_arm_r_joint6",
+        "idx67_arm_r_joint7"
+      ]
+    },
+    {
+      "id": "LEFT_GRIPPER",
+      "kind": "gripper_scalar",
+      "part": "left_hand",
+      "side": "left",
+      "open_value": 0,
+      "close_value": 1,
+      "state_source": "scalar_topic",
+      "state_topic_key": "left_gripper",
+      "joints": [
+        "idx31_hand_l_thumb_roll_joint",
+        "idx32_hand_l_thumb_abad_joint",
+        "idx33_hand_l_thumb_mcp_joint",
+        "idx36_hand_l_index_abad_joint",
+        "idx37_hand_l_index_pip_joint",
+        "idx39_hand_l_middle_pip_joint",
+        "idx41_hand_l_ring_abad_joint",
+        "idx42_hand_l_ring_pip_joint",
+        "idx44_hand_l_pinky_abad_joint",
+        "idx45_hand_l_pinky_pip_joint"
+      ],
+      "open_preset": [0.0, 1.6, -0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      "close_preset": [0.0, 1.6, -0.7, 0.0, 0.6, 0.6, 0.0, 0.6, 0.0, 0.6]
+    },
+    {
+      "id": "RIGHT_GRIPPER",
+      "kind": "gripper_scalar",
+      "part": "right_hand",
+      "side": "right",
+      "open_value": 0,
+      "close_value": 1,
+      "state_source": "scalar_topic",
+      "state_topic_key": "right_gripper",
+      "joints": [
+        "idx71_hand_r_thumb_roll_joint",
+        "idx72_hand_r_thumb_abad_joint",
+        "idx73_hand_r_thumb_mcp_joint",
+        "idx76_hand_r_index_abad_joint",
+        "idx77_hand_r_index_pip_joint",
+        "idx79_hand_r_middle_pip_joint",
+        "idx81_hand_r_ring_abad_joint",
+        "idx82_hand_r_ring_pip_joint",
+        "idx84_hand_r_pinky_abad_joint",
+        "idx85_hand_r_pinky_pip_joint"
+      ],
+      "open_preset": [0.0, -1.6, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+      "close_preset": [0.0, -1.6, 0.7, 0.0, 0.6, 0.6, 0.0, 0.6, 0.0, 0.6]
+    }
+  ],
+  "openvla_trailing": [
+    {
+      "id": "PHASE",
+      "kind": "phase",
+      "size": 1
+    }
+  ]
+}
