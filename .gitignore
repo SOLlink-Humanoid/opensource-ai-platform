@@ -1,0 +1,14 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+*.log
+*.log.*
+.env
+.venv/
+venv/
+lerobot_runtime/deployment/logs/
+lerobot_runtime/python3.12.INFO
+lerobot_runtime/*.log.*
+.git-commit-plan.sh
